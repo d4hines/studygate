@@ -5,6 +5,7 @@
             [fulcro.server :refer [defmutation defquery-root]]
             [fulcro.logging :as log]))
 
+
 (defonce last-id (atom 1000))
 (defonce requests (atom {}))
 

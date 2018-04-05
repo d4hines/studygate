@@ -196,3 +196,10 @@
    :query         [:ui/react-key {:root/application (prim/get-query Application)}]}
   (dom/div #js {:key react-key}
     (ui-application application)))
+
+;;;;;;;;;; NEW STUFF ;;;;;;;;;;;;;;;;;
+(defsc ContactView 
+  [this {:keys [firstname lastname]}]
+  (dom/h4 nil (dom/strong nil (str "Hello my name is " firstname " " lastname))))
+
+(def ui-contactview (prim/factory ContactView))
