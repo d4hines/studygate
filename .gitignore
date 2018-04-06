@@ -33,4 +33,4 @@ resources/private/js
 TAGS
 *.log
 package-lock.json
-src/main/config/
+**/*.edn
