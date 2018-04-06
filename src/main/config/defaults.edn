@@ -5,4 +5,4 @@
                         :auto-drop    true
                         }}}
  :port    3000
- :test "bar"}
+ :test "foo"}
