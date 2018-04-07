@@ -124,8 +124,23 @@
   "Returns the todo items for the given list."
   (value [{:keys [query todo-database] {{:keys [crm-config]} :value} :config} {:keys [list]}]
          (log/info "Responding to request for list: " list)
-         (let [connection (db/get-connection todo-database)]
-           (read-list crm-config connection query list))))
+         (let [connection (db/get-connection todo-database)
+               results (read-list crm-config connection query list)
+               _ (pprint results)]
+           results)))
+
+(defquery-root :surveys
+  "Testing"
+  (value [{:keys [query]} {:keys [not-sure]}]
+         {:db/id "SURVEY_ROOT"
+          :survey-list/surveys [{:db/id "someguid"
+                                 :survey/title "Server Side!"
+                                 :survey/questions [{:db/id "qeustion-guid"
+                                                     :question/displayname "Have you heard any good riddles lately?"}]}
+                                {:db/id "someotherguid"
+                                 :survey/title "Another Server Side!"
+                                 :survey/questions [{:db/id "another-guid"
+                                                     :question/displayname "What's in my pocket?"}]}]}))
 
 (defn ensure-integer [n]
   (cond

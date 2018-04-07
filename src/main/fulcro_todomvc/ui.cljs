@@ -161,12 +161,38 @@
         :c (count (:fulcro.history/history-steps history)))
       (assoc ast :params params))))
 
-(defsc Application [this {:keys [ui/support-visible ui/react-key todos ui/locale ui/comment] :or {ui/react-key "ROOT"}}]
+;;;;;;;;;; NEW STUFF ;;;;;;;;;;;;;;;;;
+(defsc SurveyQuestion [this
+                 {:keys [db/id question/displayname] :as props}]
+  {:query              [:db/id :question/displayname ]
+   :ident              [:survey-question/by-id :db/id]}
+  (dom/li nil displayname))
+
+(def ui-survey-question (prim/factory SurveyQuestion {:keyfn :db/id}))
+
+(defsc Survey [this {:keys [survey/questions survey/title db/id]}]
+  {:ident         [:survey/by-id :db/id]
+   :query         [:db/id {:survey/questions (prim/get-query SurveyQuestion)} :survey/title]}
+  (dom/div nil (dom/h2 nil (str "Survey: " title))
+           (dom/ol #js {:className "survey"}
+                   (map #(ui-survey-question %) questions))))
+
+(def ui-survey (prim/factory Survey {:keyfn :db/id}))
+
+(defsc SurveyList [this {:keys [db/id survey-list/surveys]}]
+  {:ident [:survey-list/by-id :db/id]
+   :query [:db/id {:survey-list/surveys (prim/get-query Survey)}]}
+  (map #(ui-survey-question %) questions))
+
+(def ui-survey-list (prim/factory SurveyList))
+
+(defsc Application [this {:keys [ui/support-visible ui/react-key todos ui/locale ui/comment surveys] :or {ui/react-key "ROOT"}}]
   {:initial-state (fn [p] {:todos              (prim/get-initial-state TodoList {})
                            :ui/support-visible false
                            :ui/comment         ""})
    :ident         (fn [] [:application :root])
-   :query         [:ui/support-visible :ui/comment :ui/react-key [:ui/locale '_] {:todos (prim/get-query TodoList)}]}
+   :query         [:ui/support-visible :ui/comment :ui/react-key [:ui/locale '_] {:todos (prim/get-query TodoList)}
+                   {:surveys (prim/get-query Survey)}]}
   (dom/div #js {:key (or react-key "ROOT")}
     (dom/div #js {:className "locale-selector"}
       (dom/select #js {:value    (or locale "")
@@ -186,7 +212,8 @@
                                       (mut/set-string! this :ui/comment :value ""))}
             (tr "Send Request")))
         (dom/button #js {:onClick #(mut/toggle! this :ui/support-visible)} (tr "Help!"))))
-    (ui-todo-list todos)))
+    (ui-todo-list todos)
+    (ui-survey surveys)))
 
 (def ui-application (prim/factory Application))
 
@@ -197,9 +224,3 @@
   (dom/div #js {:key react-key}
     (ui-application application)))
 
-;;;;;;;;;; NEW STUFF ;;;;;;;;;;;;;;;;;
-(defsc ContactView 
-  [this {:keys [firstname lastname]}]
-  (dom/h4 nil (dom/strong nil (str "Hello my name is " firstname " " lastname))))
-
-(def ui-contactview (prim/factory ContactView))

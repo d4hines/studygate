@@ -53,9 +53,13 @@
     ; load the list (which will auto-create it on the server). The post mutation
     ; ensures that HTML5 routing gets applied. (that event will have completed before the list is loaded, so the filtering
     ; would get lost).
-    (df/load app :todos ui/TodoList {:without       #{:list/filter} :params {:list list}
+    (df/load app :todos ui/TodoList {:without       #{:list/filter}
+                                     :params {:list list}
                                      :post-mutation `m/set-desired-filter
                                      :target        [:application :root :todos]})
+
+    (df/load app :surveys ui/Survey {:target [:application :root :surveys]
+                                       :params {:not-sure "Hey, is this working?"}})
     (configure-routing! reconciler))
   ; Start up the HTML5 history events, and dispatch them through secretary. See routes at top of this file.
   (let [h (History.)]

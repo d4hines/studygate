@@ -107,7 +107,7 @@
                                                           :optimizations        :none
                                                           :output-dir           "resources/public/js/cards"
                                                           :output-to            "resources/public/js/cards.js"
-                                                          :preloads             [devtools.preload]
+                                                          :preloads             [devtools.preload fulcro.inspect.preload]
                                                           :source-map-timestamp true}}]}
 
                           :plugins      [[lein-cljsbuild "1.1.7"]
