@@ -12,10 +12,12 @@
                  [joda-time "2.9.9"]
                  [clj-time "0.13.0"]
                  [fipp "0.6.12"]
-                 [fulcrologic/fulcro-spec "2.0.4" :scope "test" :exclusions [fulcrologic/fulcro]]]
+                 [fulcrologic/fulcro-spec "2.0.1" :scope "test" :exclusions [fulcrologic/fulcro]]
+                 [dynamics-clj "0.1.4-SNAPSHOT" :exclusions [commons-codec commons-io]]
+                 [environ "1.1.0"]]
+  :plugins [[lein-environ "1.1.0"]]
 
   :uberjar-name "todomvc.jar"
-
   :source-paths ["src/main"]
   :test-paths ["src/test"]
   :clean-targets ^{:protect false} ["target" "resources/public/js" "resources/private"]
@@ -105,7 +107,7 @@
                                                           :optimizations        :none
                                                           :output-dir           "resources/public/js/cards"
                                                           :output-to            "resources/public/js/cards.js"
-                                                          :preloads             [devtools.preload]
+                                                          :preloads             [devtools.preload fulcro.inspect.preload]
                                                           :source-map-timestamp true}}]}
 
                           :plugins      [[lein-cljsbuild "1.1.7"]

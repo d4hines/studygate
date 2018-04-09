@@ -1,0 +1,21 @@
+@import 'fonts';
+
+$purple: rgb(61,67,103);
+html, body {
+    background-color: $purple;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+@mixin logo-font {
+    font-family: 'Myriad Set Pro';
+    font-weight: bold;
+    font-style: italic;
+}
+
+.welcome {
+    h1 {
+        @include logo-font();
+        font-size: 72px;
+    }
+}
