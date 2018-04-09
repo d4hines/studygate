@@ -7,15 +7,13 @@
             [fulcro.client.primitives :as prim :refer [defsc]]
             ))
 
+(defsc TextEntrySC [this
+        {:keys [label]}]
+  {:initial-state {:label "What is your favorite color?"}}
+  (ui/text-input label nil))
 
+(def ui-text-entry-sc (prim/factory TextEntrySC))
 
-
-
-(defcard-fulcro option-item
-  "Option Set Item"
-  ui/OptionSetQuestion
-  {}
-  {:inspect-data false
-   :fulcro {:started-callback
-            (fn [app] :question ui/OptionSetQuestion)}})
-
+(defcard TextEntry
+  "A text input."
+  (ui-text-entry-sc))

@@ -13,7 +13,7 @@
                  [clj-time "0.13.0"]
                  [fipp "0.6.12"]
                  [fulcrologic/fulcro-spec "2.0.1" :scope "test" :exclusions [fulcrologic/fulcro]]
-                 [dynamics-clj "0.1.3-SNAPSHOT" :exclusions [commons-codec commons-io]]
+                 [dynamics-clj "0.1.4-SNAPSHOT" :exclusions [commons-codec commons-io]]
                  [environ "1.1.0"]]
   :plugins [[lein-environ "1.1.0"]]
 

@@ -5,12 +5,16 @@
   "main": "index.js",
   "repository": "",
   "directories": {},
+  "scripts": {
+   "scss": "node-sass --watch ./resources/public/scss -o ./resources/public/css"
+  },
   "dependencies": {},
   "devDependencies": {
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cljs-test": "^0.1.0",
-    "karma-firefox-launcher": "^0.1.7"
+    "karma-firefox-launcher": "^0.1.7",
+    "node-sass": "^4.8.3"
   },
   "author": "",
   "license": "MIT"

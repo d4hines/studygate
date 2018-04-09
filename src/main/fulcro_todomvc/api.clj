@@ -1,159 +1,102 @@
 (ns fulcro-todomvc.api
-  (:require [clojure.core :refer [pr-str]]
-            [clojure.pprint :refer [pprint]]
-            [datomic.api :as d]
-            [dynamics-clj.core :as dyn]
-            [fulcro.datomic.protocols :as db]
+  (:require [dynamics-clj.core :as dyn]
             [fulcro.logging :as log]
-            [fulcro.server :refer [defmutation defquery-root]]))
+            [fulcro.server :refer [defmutation defquery-root]]
+            [clojure.string :as str]))
 
-(defonce last-id (atom 1000))
-(defonce requests (atom {}))
-(def todolists "new_todolistses")
-(def todoitems "new_todoitems")
-
-; You can use a fully-qualified symbol with defmutation, and it will honor it. You cannot intern it though.
-; This is special. Support viewer defines the client side of this. We have to define how the server receives it.
-(defmutation fulcro.client.mutations/send-history
-  "Server reception of a support request with history. Persists in an in-memory db for this demo."
-  [p]
-  (action [env]
-          (let [_  (swap! last-id inc)
-                id @last-id]
-            (log/info "New support request " id)
-            (swap! requests assoc id p)
-            id)))
-
-(defn make-list
-  "Make a new list in CRM. Returns the ID of that list."
-  [config connection list-name]
-  (dyn/create-record config todolists {"new_title" list-name}))
-
-(defn find-list
-  "Find or create a list with the given name. Always returns a valid list ID."
-  [config conn list-name]
-  (if-let [id (-> (str "new_title eq '" list-name "'")
-                  (partial dyn/retrieve-multiple config todolists nil)
-                  first
-                  (get "new_todolistsid"))]
-    id
-    (make-list config conn list-name)))
-
-(defmutation todo-new-item
-  [{:keys [id text list-id]}]
+(defmutation submit-questions [{:keys [entity questions]}]
   (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (let [bind-id    (str "/new_todolistses(" list-id ")")
-                new-record {"new_label" text
-                            "new_complete" false
-                            "new_TodoListId@odata.bind" bind-id}
-                crm-result (dyn/create-record crm-config "new_todoitems"
-                                              new-record)]
-            (log/info "Added list item " text " to " list-id)
-            {:tempids {id crm-result}})))
+          (log/info "Received SUBMIT event for " entity)
+          (dyn/create-record crm-config entity 
+                             (reduce (fn [prev {:keys [question/logicalname question/value]}]
+                                       (if (not (nil? value))
+                                         (assoc prev logicalname value)
+                                         prev)) {} questions))
+          (log/info "Record created")))
 
-(defmutation todo-check [{:keys [id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (dyn/update-record crm-config todoitems id {"new_complete" true})
-          (log/info "Checked list item " id)
-          true))
+; FIXME
+(def config (read-string (slurp "/crm-config.edn")))
 
-(defmutation todo-uncheck [{:keys [id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (dyn/update-record crm-config todoitems id {"new_complete" false})
-          (log/info "Unchecked list item " id)
-          true))
+(defn parse-int [s]
+  (Integer. (re-find  #"\d+" s )))
 
-(defmutation commit-label-change [{:keys [id text]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (dyn/update-record crm-config todoitems id {"new_label" text})
-          (log/info "Updated list item " id " to " text)))
+(defn label*
+  "A helper method for extraction labels as returned from CRM."
+  [label] (get-in label ["UserLocalizedLabel" "Label"]))
 
-(defn- set-checked
-  [config list-id value]
-  (doseq [id (map (fn [x] (get x "new_todoitemid"))
-                  (dyn/retrieve-multiple config todoitems
-                                         nil
-                                         (str "_new_todolistid_value eq " list-id)))]
-    (dyn/update-record config todoitems id {"new_complete" value}))
-  (log/info "Set all items in " list-id " to " (if value "checked" "unchecked"))
-  true)
+(defn get-normal-attributes [config id]
+  (->> (get-in (dyn/retrieve* config
+                              (str "EntityDefinitions(" id
+                                   ")?$select=LogicalName"
+                                   "&$expand=Attributes"
+                                   "($select=IsPrimaryId,LogicalName,DisplayName,AttributeType,Description)"))
+               [:body "Attributes"])
+       (filterv (fn [{:strs [IsPrimaryId AttributeType LogicalName]}]
+                  (and (str/starts-with? LogicalName "survey_")
+                       (not (contains? #{"Picklist" "Boolean" "Virtual"} AttributeType))
+                       (not IsPrimaryId))))
+       (mapv (fn [{:strs [MetadataId LogicalName DisplayName Description] :as props}]
+               {:db/id MetadataId
+                :question/logicalname LogicalName
+                :question/displayname (label* DisplayName)
+                :question/order (parse-int (label* Description))
+                ;; TODO expand to more types (int, date, etc). String is the only supported one right now.
+                :question/type :text}))))
 
-(defmutation todo-check-all [{:keys [list-id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (set-checked crm-config list-id true)))
+(defn options* [x] (mapv (fn [{:strs [Value Label] :as x}]
+                           {:opt-value (case Value 0 false 1 true Value)
+                            :opt-label (label* Label)}) x))
 
-(defmutation todo-uncheck-all [{:keys [list-id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (set-checked crm-config list-id false)))
+(defn get-boolean-attributes [config id]
+  (->> (get-in (dyn/retrieve* config
+                              (str "EntityDefinitions(" id
+                                   ")/Attributes/Microsoft.Dynamics.CRM.BooleanAttributeMetadata"
+                                   "?$select=LogicalName,DisplayName,Description"
+                                   "&$expand=OptionSet($select=TrueOption,FalseOption)"))
+               [:body "value"])
+       (mapv (fn [{:strs [MetadataId DisplayName LogicalName Description]
+                   {:strs [TrueOption FalseOption]} "OptionSet"}]
+               {:db/id MetadataId
+                :question/logicalname LogicalName
+                :question/displayname (label* DisplayName)
+                :question/order (parse-int (label* Description))
+                :question/type :option
+                :question/options (options* [TrueOption FalseOption])}))))
 
-(defmutation todo-delete-item [{:keys [list-id id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (dyn/delete-record crm-config todoitems id)
-          (log/info "Deleted item " id)
-          true))
+(defn get-picklist-attributes [config id]
+  (->> (get-in (dyn/retrieve* config
+                              (str "EntityDefinitions(" id
+                                   ")/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata"
+                                   "?$select=LogicalName,DisplayName,Description"
+                                   "&$expand=OptionSet($select=Options)"))
+               [:body "value"])
+       (mapv (fn [{:strs [MetadataId DisplayName LogicalName Description]
+                   {:strs [Options]} "OptionSet"}]
+               {:db/id MetadataId
+                :question/logicalname LogicalName
+                :question/displayname (label* DisplayName)
+                :question/order (parse-int (label* Description))
+                :question/type :option
+                :question/options (options* Options)}))))
 
-(defmutation todo-clear-complete [{:keys [list-id]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
-          (doseq [id (map (fn [x] (get x "new_todoitemid"))
-                          (dyn/retrieve-multiple crm-config todoitems
-                                                 nil
-                                                 (str "_new_todolistid_value eq "
-                                                      list-id
-                                                      " and  new_complete eq true ")))]
-            (dyn/delete-record crm-config todoitems id))
-          (log/info "Deleted all cleared items in list " list-id)
-          true))
+(defn get-entity-questions [config id]
+  (into [] cat
+   [(get-normal-attributes config id)
+   (get-boolean-attributes config id)
+   (get-picklist-attributes config id)]))
 
-(defn read-list [config connection query nm]
-  (let [;; {:db/id 17592186045431, :list/title "successList"}
-        crm-todolist (first (dyn/retrieve-multiple config todolists nil
-                                                   (str "new_title eq '" nm "'")))
-        crm-todolistid (get crm-todolist "new_todolistsid")
-        crm-todoitems (dyn/retrieve-multiple config todoitems
-                                             ["new_complete" "new_label" "new_todoitemid"]
-                                             (str "_new_todolistid_value eq " crm-todolistid))
-        mapped-items (mapv (fn [x] {:db/id (get x "new_todoitemid")
-                                    :item/label (get x "new_label")
-                                    :item/complete (get x "new_complete")}) crm-todoitems)]
-
-    {:db/id crm-todolistid
-     :list/title nm
-     :list/items mapped-items}))
-
-(defquery-root :todos
-  "Returns the todo items for the given list."
-  (value [{:keys [query todo-database] {{:keys [crm-config]} :value} :config} {:keys [list]}]
-         (log/info "Responding to request for list: " list)
-         (let [connection (db/get-connection todo-database)
-               results (read-list crm-config connection query list)
-               _ (pprint results)]
-           results)))
+(defn get-surveys [config]
+  (->> (dyn/retrieve-multiple config "EntityDefinitions" ["DisplayName" "EntitySetName" "Description"] nil)
+       (filter (fn [x] (str/starts-with? (get x "EntitySetName") "survey_")))
+       (mapv (fn [{:strs [EntitySetName MetadataId DisplayName Description]}]
+               {:db/id MetadataId
+                :survey/title (label* DisplayName)
+                :survey/entity EntitySetName
+                :survey/image (label* Description)
+                :survey/questions (get-entity-questions config MetadataId)}))))
 
 (defquery-root :surveys
-  "Testing"
-  (value [{:keys [query]} {:keys [not-sure]}]
-         {:db/id "SURVEY_ROOT"
-          :survey-list/surveys [{:db/id "someguid"
-                                 :survey/title "Server Side!"
-                                 :survey/questions [{:db/id "qeustion-guid"
-                                                     :question/displayname "Have you heard any good riddles lately?"}]}
-                                {:db/id "someotherguid"
-                                 :survey/title "Another Server Side!"
-                                 :survey/questions [{:db/id "another-guid"
-                                                     :question/displayname "What's in my pocket?"}]}]}))
+  (value [{:keys [query todo-database] {{:keys [crm-config]} :value} :config} {:keys [list]}]
+         {:db/id (:crmorg config)
+          :survey-list/surveys (get-surveys config)}))
 
-(defn ensure-integer [n]
-  (cond
-    (string? n) (Integer/parseInt n)
-    :else n))
-
-(defquery-root :support-request
-  "Get a support request by server ID (see server logs (NOT CLIENT Tx ID). This is required for the support viewer
-  to work. You simply return the EDN that you saved earlier for the given support request."
-  (value [env {:keys [id]}]
-         (let [id      (ensure-integer id)
-               history (get @requests id [])]
-           (log/info "Request for client history: " id)
-           (when-not (seq history)
-             (log/error "Invalid history ID! Perhaps you used a client tx id instead? Known IDs are: " (pr-str (keys @requests))))
-           history)))
