@@ -4,7 +4,7 @@
             [fulcro-todomvc.api :as api]
             [fulcro.i18n :refer [tr trf]]
             yahoo.intl-messageformat-with-locales
-            [fulcro.client.dom :as dom]
+            [fulcro.client.alpha.dom :as dom]
             [fulcro.client :as fc]))
 
 (defn is-enter? [evt] (= 13 (.-keyCode evt)))
@@ -119,7 +119,7 @@
 
 (def ui-application (prim/factory Application))
 
-(defsc Root [this {:keys [ui/react-key root/application]}]
+(defsc Root [this {:keys [root/application]}]
   {:initial-state (fn [p] {:ui/locale        "en-US"
                            :root/application (prim/get-initial-state Application {})})
    :query         [:ui/react-key {:root/application (prim/get-query Application)}]}

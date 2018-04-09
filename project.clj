@@ -5,7 +5,7 @@
 
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.9.946"]
-                 [fulcrologic/fulcro "2.2.0-SNAPSHOT"]
+                 [fulcrologic/fulcro "2.4.2"]
                  [fulcrologic/fulcro-datomic "2.0.0-alpha1" :exclusions [org.clojure/tools.cli]]
                  [com.datomic/datomic-free "0.9.5561" :exclusions [com.google.guava/guava]]
                  [secretary "1.2.3" :exclusions [com.cemerick/clojurescript.test]]
@@ -114,15 +114,15 @@
                                          [lein-doo "0.1.7"]
                                          [com.jakemccrary/lein-test-refresh "0.21.1"]]
 
-                          :dependencies [[binaryage/devtools "0.9.8"]
+                          :dependencies [[binaryage/devtools "0.9.9"]
                                          [org.clojure/tools.namespace "0.3.0-alpha4"]
-                                         [fulcrologic/fulcro-inspect "2.0.0-alpha4"]
+                                         [fulcrologic/fulcro-inspect "2.0.0" :exclusions [fulcrologic/fulcro-css]]
 
                                          [org.clojure/tools.nrepl "0.2.13"]
                                          [org.clojure/test.check "0.9.0"]
                                          [com.cemerick/piggieback "0.2.2"]
                                          [lein-doo "0.1.7" :scope "test"]
-                                         [figwheel-sidecar "0.5.14" :exclusions [org.clojure/tools.reader]]
+                                         [figwheel-sidecar "0.5.15" :exclusions [org.clojure/tools.reader]]
                                          [devcards "0.2.4" :exclusions [cljsjs/react cljsjs/react-dom]]]
                           :repl-options {:init-ns          user
                                          :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}})
