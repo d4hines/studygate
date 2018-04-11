@@ -171,8 +171,12 @@ html, body {
   color: white;
   font-family: 'Montserrat', sans-serif; }
 
-.welcome h1 {
-  font-family: 'Myriad Set Pro';
-  font-weight: bold;
-  font-style: italic;
-  font-size: 72px; }
+div#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  div#app .welcome h1 {
+    font-family: 'Myriad Set Pro';
+    font-weight: bold;
+    font-style: italic;
+    font-size: 72px; }

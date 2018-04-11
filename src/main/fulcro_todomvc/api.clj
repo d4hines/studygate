@@ -14,9 +14,6 @@
                                          prev)) {} questions))
           (log/info "Record created")))
 
-; FIXME
-(def config (read-string (slurp "/crm-config.edn")))
-
 (defn parse-int [s]
   (Integer. (re-find  #"\d+" s )))
 
