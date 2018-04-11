@@ -31,7 +31,7 @@
 (defcard todo-item-unchecked "A To-Do Item"
   (ui-todo-item {:db/id 1 :item/label "Buy Milk" :item/complete? false :ui/editing? false}))
 
-(defcard todo-item-unchecked "A To-Do Item"
+(defcard todo-item-unchecked "A To-o Item"
   (ui-todo-item {:db/id 1 :item/label "Buy Milk" :item/complete? true :ui/editing? false}))
 
 (defsc MyRoot [this {:keys [name] :as props}]
