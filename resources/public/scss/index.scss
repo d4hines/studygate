@@ -12,14 +12,32 @@ html, body {
     font-weight: bold;
     font-style: italic;
 }
-div#app {
+
+@mixin flex-center {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+div#app {
+    @include flex-center();
     .welcome {
+        @include flex-center();
+        * {
+            margin: 25px;
+        }
         h1 {
             @include logo-font();
             font-size: 72px;
+            text-align: center;
+        }
+        h2 {
+            font-weight: normal;
+            font-size: 34px;
+        }
+        span {
+            font-size: 20px;
+
         }
     }
 }

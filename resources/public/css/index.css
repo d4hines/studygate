@@ -175,8 +175,20 @@ div#app {
   display: flex;
   flex-direction: column;
   align-items: center; }
-  div#app .welcome h1 {
-    font-family: 'Myriad Set Pro';
-    font-weight: bold;
-    font-style: italic;
-    font-size: 72px; }
+  div#app .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    div#app .welcome * {
+      margin: 25px; }
+    div#app .welcome h1 {
+      font-family: 'Myriad Set Pro';
+      font-weight: bold;
+      font-style: italic;
+      font-size: 72px;
+      text-align: center; }
+    div#app .welcome h2 {
+      font-weight: normal;
+      font-size: 34px; }
+    div#app .welcome span {
+      font-size: 20px; }

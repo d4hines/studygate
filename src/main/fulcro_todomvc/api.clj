@@ -94,6 +94,6 @@
 
 (defquery-root :surveys
   (value [{:keys [query todo-database] {{:keys [crm-config]} :value} :config} {:keys [list]}]
-         {:db/id (:crmorg config)
-          :survey-list/surveys (get-surveys config)}))
+         {:db/id (:crmorg crm-config)
+          :survey-list/surveys (get-surveys crm-config)}))
 
