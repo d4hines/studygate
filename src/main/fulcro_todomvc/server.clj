@@ -1,6 +1,5 @@
 (ns fulcro-todomvc.server
-  (:require [clojure.pprint :refer [pprint]]
-            [com.stuartsierra.component :as component]
+  (:require [com.stuartsierra.component :as component]
             [fulcro.datomic.core :refer [build-database]]
             [fulcro.easy-server :as easy]
             [fulcro.server :as server]))
@@ -15,7 +14,6 @@
     ;; and start it running. For example, connect to a
     ;; database, create thread pools, or initialize shared
     ;; state.
-    (pprint component*)
     component*)
 
   (stop [component*]
@@ -34,6 +32,6 @@ component*))
      (easy/make-fulcro-server
       :config-path config-path
       :parser (server/fulcro-parser)                       ; allows us to use built-in multimethods and helper macros for reads/mutates
-      :parser-injections #{:todo-database :config}                 ; places the named components into the env of mutations and queries
-      :components {:todo-database (build-database :todo)   ; adds components to the server
+      :parser-injections #{:config}                 ; places the named components into the env of mutations and queries
+      :components {
                    :logger        {}}))))

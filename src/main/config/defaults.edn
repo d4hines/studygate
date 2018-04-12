@@ -1,0 +1,6 @@
+{:crmorg :env/CRMORG 
+ :clientid :env/CLIENTID 
+ :username :env/USERNAME 
+ :password :env/PASSWORD 
+ :tokenendpoint :env/TOKENENDPOINT 
+ :crmwebapipath :env/CRMWEBAPIPATH}

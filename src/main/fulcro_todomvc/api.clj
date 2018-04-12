@@ -93,7 +93,13 @@
                 :survey/questions (get-entity-questions config MetadataId)}))))
 
 (defquery-root :surveys
-  (value [{:keys [query todo-database] {{:keys [crm-config]} :value} :config} {:keys [list]}]
-         {:db/id (:crmorg crm-config)
-          :survey-list/surveys (get-surveys crm-config)}))
+  (value [{:keys [query todo-database] {{:keys [crmorg clientid username password
+                                                tokenendpoint crmwebapipath]} :value} :config} {:keys [list]}]
+         {:db/id crmorg
+          :survey-list/surveys (get-surveys {:crmorg crmorg
+                                             :clientid clientid
+                                             :username username
+                                             :password password
+                                             :tokenendpoint tokenendpoint
+                                             :crmwebapipath crmwebapipath})}))
 

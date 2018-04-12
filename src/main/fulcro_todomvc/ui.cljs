@@ -102,12 +102,12 @@
            (let [welcome (dom/div #js {:className "welcome"}
                                   (dom/h1 nil "StudyGate")
                                   (dom/h2 nil "A really catch tagline goes here.")
-                                  (dom/span nil "Getting things ready for you..")
-                                  (comment  (if (= 0 (count surveys))
-                                              (dom/span nil "Getting things ready for you..")
-                                              (dom/button #js {:onClick
-                                                               #(mut/set-value! this :ui/route :survey-list)}
-                                                          "Let's Go!"))))
+                                  ;; (dom/span nil "Getting things ready for you..")
+                                  (if (= 0 (count surveys))
+                                    (dom/span nil "Getting things ready for you..")
+                                    (dom/button #js {:onClick
+                                                     #(mut/set-value! this :ui/route :survey-list)}
+                                                "Let's Go!")))
                  finished (dom/div nil
                                    (dom/h2 nil "All done!")
                                    (dom/h2 nil "Thanks for helping change the world.")
