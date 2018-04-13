@@ -6,9 +6,9 @@
             [clojure.pprint :refer [pprint]]))
 
 (defmutation submit-questions [{:keys [entity questions]}]
-  (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
+   (action [{:keys [config]}]
           (log/info "Received SUBMIT event for " entity)
-          (dyn/create-record crm-config entity
+          (dyn/create-record (:value config) entity
                              (reduce (fn [prev {:keys [question/logicalname question/value]}]
                                        (if (not (nil? value))
                                          (assoc prev logicalname value)
@@ -98,7 +98,7 @@
                 :survey/questions (get-entity-questions config MetadataId)}))))
 
 (defquery-root :surveys
-  (value [{:keys [query todo-database ] {:keys [value]} :config} {:keys [list]}]
+  (value [{:keys [query] {:keys [value]} :config} {:keys [list]}]
          {:db/id (:crmorg value)
           :survey-list/surveys (get-surveys value)}))
 

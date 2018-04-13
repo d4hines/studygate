@@ -87,7 +87,7 @@
                                        #(mut/set-value! this :ui/selected-survey %)}))]
     (dom/div nil ""
              (if selected-survey
-               (ui-survey (first (filter #(= (:db/id %) ) surveys)))
+               (ui-survey (first (filter #(= (:db/id %) selected-survey) surveys)))
                (dom/div nil
                         (dom/h2 nil "Select a survey to begin.")
                         (map #(ui-survey-tile (tile-props %)) surveys))))))
