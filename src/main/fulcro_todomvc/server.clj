@@ -1,8 +1,8 @@
 (ns fulcro-todomvc.server
   (:require [com.stuartsierra.component :as component]
-            [fulcro.datomic.core :refer [build-database]]
             [fulcro.easy-server :as easy]
-            [fulcro.server :as server]))
+            [fulcro.server :as server]
+            [fulcro-todomvc.api :as api]))
 
 (defrecord CRMClient [config]
   ;; Implement the Lifecycle protocol
