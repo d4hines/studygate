@@ -1,11 +1,11 @@
-(ns fulcro-todomvc.i18n.locales
+(ns studygate.i18n.locales
   (:require
     goog.module
     goog.module.ModuleLoader
     [goog.module.ModuleManager :as module-manager]
     [fulcro.i18n :as i18n]
-    fulcro-todomvc.i18n.en-US
-    fulcro-todomvc.i18n.es-MX)
+    studygate.i18n.en-US
+    studygate.i18n.es-MX)
   (:import goog.module.ModuleManager))
 
 (defonce manager (module-manager/getInstance))

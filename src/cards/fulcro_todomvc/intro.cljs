@@ -1,4 +1,4 @@
-(ns fulcro-todomvc.intro
+(ns studygate.intro
   (:require [devcards.core :as rc :refer-macros [defcard]]
             [fulcro.client.dom :as dom]
             [fulcro.client.cards :refer [defcard-fulcro]]

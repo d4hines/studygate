@@ -1,5 +1,5 @@
-(ns fulcro-todomvc.cards 
-  (:require [fulcro-todomvc.ui :as ui]
+(ns studygate.cards 
+  (:require [studygate.ui :as ui]
             [devcards.core :as rc :refer-macros [defcard]]
             [fulcro.client.dom :as dom]
             [fulcro.client.cards :refer [defcard-fulcro]]

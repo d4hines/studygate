@@ -1,8 +1,8 @@
-(ns fulcro-todomvc.server
+(ns studygate.server
   (:require [com.stuartsierra.component :as component]
             [fulcro.easy-server :as easy]
             [fulcro.server :as server]
-            [fulcro-todomvc.api :as api]))
+            [studygate.api :as api]))
 
 (defrecord CRMClient [config]
   ;; Implement the Lifecycle protocol

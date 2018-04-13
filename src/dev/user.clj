@@ -5,7 +5,7 @@
     [figwheel-sidecar.system :as fig]
     [fulcro-spec.suite :as suite]
     [fulcro-spec.selectors :as sel]
-    [fulcro-todomvc.server :as server]))
+    [studygate.server :as server]))
 
 ;;FIGWHEEL
 (def figwheel (atom nil))

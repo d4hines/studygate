@@ -1,8 +1,8 @@
-(ns fulcro-todomvc.server-main
+(ns studygate.server-main
   (:require
     [com.stuartsierra.component :as component]
     [fulcro.server :as c]
-    [fulcro-todomvc.server :refer [make-system]])
+    [studygate.server :refer [make-system]])
   (:gen-class))
 
 ; It is recommended that your production config be on the server itself in a directory. We have placed a

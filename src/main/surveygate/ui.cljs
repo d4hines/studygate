@@ -1,7 +1,7 @@
-(ns fulcro-todomvc.ui
+(ns studygate.ui
   (:require [fulcro.client.primitives :as prim :refer [defsc]]
             [fulcro.client.mutations :as mut :refer [defmutation]]
-            [fulcro-todomvc.api :as api]
+            [studygate.api :as api]
             [fulcro.i18n :refer [tr trf]]
             yahoo.intl-messageformat-with-locales
             [fulcro.client.alpha.dom :as dom]

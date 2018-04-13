@@ -1,4 +1,4 @@
-(ns fulcro-todomvc.api
+(ns studygate.api
   (:require [dynamics-clj.core :as dyn]
             [fulcro.logging :as log]
             [fulcro.server :refer [defmutation defquery-root]]

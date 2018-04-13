@@ -27,13 +27,13 @@
                         :source-paths ["src/main"]
                         :jar          true
                         :compiler     {:asset-path    "js/prod"
-                                       :main          fulcro-todomvc.client-main
+                                       :main          studygate.client-main
                                        :optimizations :advanced
-                                       :source-map    "resources/public/js/fulcro-todomvc.js.map"
+                                       :source-map    "resources/public/js/studygate.js.map"
                                        :output-dir    "resources/public/js/prod"
-                                       :output-to     "resources/public/js/fulcro-todomvc.js"}}]}
+                                       :output-to     "resources/public/js/studygate.js"}}]}
 
-  :profiles {:uberjar    {:main           fulcro-todomvc.server-main
+  :profiles {:uberjar    {:main           studygate.server-main
                           :aot            :all
                           :jar-exclusions [#"public/js/prod" #"com/google.*js$"]
                           :prep-tasks     ["clean" ["clean"]
@@ -61,13 +61,13 @@
                                                           :main                 cljs.user
                                                           :optimizations        :none
                                                           :output-dir           "resources/public/js/dev"
-                                                          :output-to            "resources/public/js/fulcro-todomvc.js"
+                                                          :output-to            "resources/public/js/studygate.js"
                                                           :preloads             [devtools.preload fulcro.inspect.preload]
                                                           :source-map-timestamp true}}
                                           {:id           "support"
                                            :source-paths ["src/main"]
                                            :figwheel     true
-                                           :compiler     {:main                 fulcro-todomvc.support-viewer
+                                           :compiler     {:main                 studygate.support-viewer
                                                           :asset-path           "js/support"
                                                           :output-to            "resources/public/js/support.js"
                                                           :output-dir           "resources/public/js/support"
@@ -77,15 +77,15 @@
                                           {:id           "i18n" ;for gettext string extraction
                                            :source-paths ["src/main"]
                                            :compiler     {:asset-path    "i18n"
-                                                          :main          fulcro-todomvc.client-main
+                                                          :main          studygate.client-main
                                                           :optimizations :whitespace
                                                           :output-dir    "i18n/tmp"
                                                           :output-to     "i18n/i18n.js"}}
                                           {:id           "test"
                                            :source-paths ["src/test" "src/main"]
-                                           :figwheel     {:on-jsload "fulcro-todomvc.client-test-main/client-tests"}
+                                           :figwheel     {:on-jsload "studygate.client-test-main/client-tests"}
                                            :compiler     {:asset-path    "js/test"
-                                                          :main          fulcro-todomvc.client-test-main
+                                                          :main          studygate.client-test-main
                                                           :optimizations :none
                                                           :output-dir    "resources/public/js/test"
                                                           :output-to     "resources/public/js/test/test.js"
@@ -93,7 +93,7 @@
                                           {:id           "automated-tests"
                                            :source-paths ["src/test" "src/main"]
                                            :compiler     {:asset-path    "js/ci"
-                                                          :main          fulcro-todomvc.CI-runner
+                                                          :main          studygate.CI-runner
                                                           :optimizations :none
                                                           :output-dir    "resources/private/js/ci"
                                                           :output-to     "resources/private/js/unit-tests.js"}}
@@ -101,7 +101,7 @@
                                            :figwheel     {:devcards true}
                                            :source-paths ["src/main" "src/cards"]
                                            :compiler     {:asset-path           "js/cards"
-                                                          :main                 fulcro-todomvc.cards
+                                                          :main                 studygate.cards
                                                           :optimizations        :none
                                                           :output-dir           "resources/public/js/cards"
                                                           :output-to            "resources/public/js/cards.js"

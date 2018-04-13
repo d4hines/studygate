@@ -1,6 +1,6 @@
-(ns fulcro-todomvc.support-viewer
+(ns studygate.support-viewer
   (:require
-    [fulcro-todomvc.ui :as ui]
+    [studygate.ui :as ui]
     [fulcro.client :as core]
     yahoo.intl-messageformat-with-locales
     [fulcro.support-viewer :as support]))

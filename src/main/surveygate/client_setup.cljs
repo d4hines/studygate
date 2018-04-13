@@ -1,7 +1,7 @@
-(ns fulcro-todomvc.client-setup
+(ns studygate.client-setup
   (:require [fulcro.client :as fc]
-            [fulcro-todomvc.ui :as ui]
-            [fulcro-todomvc.api :as m]                      ; ensures mutations are loaded
+            [studygate.ui :as ui]
+            [studygate.api :as m]                      ; ensures mutations are loaded
             [fulcro.client.primitives :as prim]
             [fulcro.client.data-fetch :as df]))
 

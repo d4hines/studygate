@@ -1,4 +1,4 @@
-(ns fulcro-todomvc.api
+(ns studygate.api
   (:require [fulcro.client.mutations :as m :refer [defmutation]]
             [fulcro.util :refer [unique-key]]
             [fulcro.support-viewer :as v]

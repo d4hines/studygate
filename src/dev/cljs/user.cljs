@@ -3,11 +3,11 @@
     [fulcro.client :as fc]
     [cljs.pprint :refer [pprint]]
     [fulcro.client.logging :as log]
-    [fulcro-todomvc.ui :as ui]
+    [studygate.ui :as ui]
     [clojure.spec.alpha :as s]
     [clojure.spec.test.alpha :as st]
     fulcro.history
-    [fulcro-todomvc.client-setup :refer [app]]))
+    [studygate.client-setup :refer [app]]))
 
 (enable-console-print!)
 
