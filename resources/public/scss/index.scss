@@ -18,7 +18,73 @@ html, body {
     flex-direction: column;
     align-items: center;
 }
+.banner-svg-background {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1; 
+svg {
+    transform: scale(1.5);
+    position: absolute;
+    bottom: 0px;
+    bottom: 15%;
+    right: 250px;
+}
+}
+@media (max-width: 1000px) {
+    svg {
+        bottom: 10%;
+    }
+ }
 
+ @media (max-width: 1000px) {
+    svg {
+       display: none;
+    }
+ }
+
+
+
+    #wave-one {
+        -webkit-animation: wave-one 10s linear infinite;
+                animation: wave-one 10s linear infinite; }
+      
+      #wave-two {
+        -webkit-animation: wave-two 15s linear infinite;
+                animation: wave-two 15s linear infinite; }
+      
+      @-webkit-keyframes wave-one {
+        from {
+          -webkit-transform: rotate(0deg) translateX(5px) rotate(0deg);
+                  transform: rotate(0deg) translateX(5px) rotate(0deg); }
+        to {
+          -webkit-transform: rotate(360deg) translateX(5px) rotate(-360deg);
+                  transform: rotate(360deg) translateX(5px) rotate(-360deg); } }
+      
+      @keyframes wave-one {
+        from {
+          -webkit-transform: rotate(0deg) translateX(5px) rotate(0deg);
+                  transform: rotate(0deg) translateX(5px) rotate(0deg); }
+        to {
+          -webkit-transform: rotate(360deg) translateX(5px) rotate(-360deg);
+                  transform: rotate(360deg) translateX(5px) rotate(-360deg); } }
+      @-webkit-keyframes wave-two {
+        from {
+          -webkit-transform: rotate(0deg) translateX(8px) rotate(0deg);
+                  transform: rotate(0deg) translateX(8px) rotate(0deg); }
+        to {
+          -webkit-transform: rotate(360deg) translateX(8px) rotate(-360deg);
+                  transform: rotate(360deg) translateX(8px) rotate(-360deg); } }
+      @keyframes wave-two {
+        from {
+          -webkit-transform: rotate(0deg) translateX(8px) rotate(0deg);
+                  transform: rotate(0deg) translateX(8px) rotate(0deg); }
+        to {
+          -webkit-transform: rotate(360deg) translateX(8px) rotate(-360deg);
+                  transform: rotate(360deg) translateX(8px) rotate(-360deg); } }
 div#app {
     @include flex-center();
     .welcome {
