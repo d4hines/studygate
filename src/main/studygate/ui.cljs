@@ -16,9 +16,10 @@
     (when-not (empty? trimmed-text)
       trimmed-text)))
 
-(defmulti render-question (fn [question-component props] (:question/type props)))
-
-(defmethod render-question :text [this {:keys [db/id question/displayname question/value question/options]}]
+(defsc TextQuestion [this {:keys [db/id question/displayname question/value question/options question/type]}]
+  {:query [:db/id :question/displayname :question/type
+           :question/options :question/value :question/logicalname]
+   :ident (fn [] [type id])}
   (dom/div #js {:className "question"}
     (dom/input #js {:className "effect-17"
                     :type      "text"
@@ -28,7 +29,11 @@
     (dom/label nil displayname)
     (dom/span #js {:className "focus-border"})))
 
-(defmethod render-question :option [this {:keys [db/id question/displayname question/value question/options]}]
+(def ui-text-question (prim/factory TextQuestion {:keyfn :db/id}))
+(defsc OptionQuestion [this {:keys [db/id question/displayname question/value question/options question/type]}]
+  {:query [:db/id :question/displayname :question/type
+           :question/options :question/value :question/logicalname]
+   :ident (fn [] [type id])}
   (dom/div nil
     (dom/label nil displayname)
     (dom/ul nil
@@ -37,11 +42,17 @@
                           :onClick (fn [] (prim/transact! this `[(api/set-question-value ~{:id id :value opt-value})]))}
                opt-label)) options))))
 
-(defsc SurveyQuestion [this props]
-  {:query [:db/id :question/displayname :question/type
-           :question/options :question/value :question/logicalname]
-   :ident [:survey-question/by-id :db/id]}
-  (dom/li nil (render-question this props)))
+(def ui-option-question (prim/factory OptionQuestion {:keyfn :db/id}))
+
+(defsc SurveyQuestion [this {:keys [db/id question/type] :as props}]
+  {:query (fn [] {:text-question/by-id   (prim/get-query TextQuestion)
+                  :option-question/by-id (prim/get-query OptionQuestion)
+                  })
+   :ident (fn [] [type id])}
+  (dom/li nil (case type
+                :text (ui-text-question props)
+                :option (ui-option-question props)
+                (dom/div nil "Invalid question type"))))
 
 (def ui-survey-question (prim/factory SurveyQuestion {:keyfn :db/id}))
 
