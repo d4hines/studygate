@@ -2,12 +2,13 @@
   (:require [dynamics-clj.core :as dyn]
             [fulcro.logging :as log]
             [fulcro.server :refer [defmutation defquery-root]]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.pprint :refer [pprint]]))
 
 (defmutation submit-questions [{:keys [entity questions]}]
   (action [{:keys [todo-database] {{:keys [crm-config]} :value} :config}]
           (log/info "Received SUBMIT event for " entity)
-          (dyn/create-record crm-config entity 
+          (dyn/create-record crm-config entity
                              (reduce (fn [prev {:keys [question/logicalname question/value]}]
                                        (if (not (nil? value))
                                          (assoc prev logicalname value)
@@ -15,7 +16,7 @@
           (log/info "Record created")))
 
 (defn parse-int [s]
-  (Integer. (re-find  #"\d+" s )))
+  (Integer. (re-find  #"\d+" s)))
 
 (defn label*
   "A helper method for extraction labels as returned from CRM."
@@ -81,9 +82,9 @@
 
 (defn get-entity-questions [config id]
   (into [] cat
-   [(get-normal-attributes config id)
-   (get-boolean-attributes config id)
-   (get-picklist-attributes config id)]))
+        [(get-normal-attributes config id)
+         (get-boolean-attributes config id)
+         (get-picklist-attributes config id)]))
 
 (defn get-surveys [config]
   (log/info "Responding to root :survey query")
@@ -97,13 +98,7 @@
                 :survey/questions (get-entity-questions config MetadataId)}))))
 
 (defquery-root :surveys
-  (value [{:keys [query todo-database] {{:keys [crmorg clientid username password
-                                                tokenendpoint crmwebapipath]} :value} :config} {:keys [list]}]
-         {:db/id crmorg
-          :survey-list/surveys (get-surveys {:crmorg crmorg
-                                             :clientid clientid
-                                             :username username
-                                             :password password
-                                             :tokenendpoint tokenendpoint
-                                             :crmwebapipath crmwebapipath})}))
+  (value [{:keys [query todo-database ] {:keys [value]} :config} {:keys [list]}]
+         {:db/id (:crmorg value)
+          :survey-list/surveys (get-surveys value)}))
 
