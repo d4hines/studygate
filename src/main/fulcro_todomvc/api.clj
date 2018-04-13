@@ -22,6 +22,7 @@
   [label] (get-in label ["UserLocalizedLabel" "Label"]))
 
 (defn get-normal-attributes [config id]
+  (log/info "Retrieving normal attributes for MetadataId" id)
   (->> (get-in (dyn/retrieve* config
                               (str "EntityDefinitions(" id
                                    ")?$select=LogicalName"
@@ -45,6 +46,7 @@
                             :opt-label (label* Label)}) x))
 
 (defn get-boolean-attributes [config id]
+  (log/info "Retrieving boolean attributes for MetadataId " id)
   (->> (get-in (dyn/retrieve* config
                               (str "EntityDefinitions(" id
                                    ")/Attributes/Microsoft.Dynamics.CRM.BooleanAttributeMetadata"
@@ -61,6 +63,7 @@
                 :question/options (options* [TrueOption FalseOption])}))))
 
 (defn get-picklist-attributes [config id]
+  (log/info "Retrieving picklist attributes for MetadatId " id)
   (->> (get-in (dyn/retrieve* config
                               (str "EntityDefinitions(" id
                                    ")/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata"
@@ -83,6 +86,7 @@
    (get-picklist-attributes config id)]))
 
 (defn get-surveys [config]
+  (log/info "Responding to root :survey query")
   (->> (dyn/retrieve-multiple config "EntityDefinitions" ["DisplayName" "EntitySetName" "Description"] nil)
        (filter (fn [x] (str/starts-with? (get x "EntitySetName") "survey_")))
        (mapv (fn [{:strs [EntitySetName MetadataId DisplayName Description]}]
