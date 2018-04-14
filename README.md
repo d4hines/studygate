@@ -38,13 +38,13 @@ StudyGate has exactly two concerns: pure rendering of CRM metadata, and writing 
 Start figwheel (the JVM options tell figwheel which builds to run):
 
 ```
-JVM_OPTS="-Ddev -Dtest" lein run -m clojure.main script/figwheel.clj
+JVM_OPTS="-Ddev" lein run -m clojure.main script/figwheel.clj
 ```
 
 which should start auto-building the cljs source and show a browser REPL.
 
 You can do this in IntelliJ using a regular Clojure Main REPL that runs
-`script/figwheel.clj` (Parameters field). Put the `-Ddev` and `-Dtest` options can go in the JVM
+`script/figwheel.clj` (Parameters field). Put the `-Ddev` options can go in the JVM
 arguments field.
 
 Our internal figwheel support uses Java system properties to select the
