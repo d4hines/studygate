@@ -6,7 +6,7 @@
   "repository": "",
   "directories": {},
   "scripts": {
-   "scss": "node-sass --watch ./resources/public/scss -o ./resources/public/css"
+    "scss": "node-sass --watch ./resources/public/scss -o ./resources/public/css"
   },
   "dependencies": {},
   "devDependencies": {

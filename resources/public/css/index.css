@@ -166,7 +166,8 @@
   src: local("☺︎"), url("../fonts/myriad/myriad-set-pro_text.woff") format("woff"), url("../fonts/myriad/myriad-set-pro_text.ttf") format("truetype");
   /* Copyright (c) 1992 Adobe Systems Incorporated. All Rights Reserved. Myriad is a trademark of Adobe Systems Incorporated. */ }
 
-html, body {
+html,
+body {
   background-color: #3d4367;
   color: white;
   font-family: 'Montserrat', sans-serif; }
@@ -178,7 +179,7 @@ html, body {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 1; }
+  z-index: -1; }
   .banner-svg-background svg {
     transform: scale(1.5);
     position: absolute;
@@ -235,6 +236,7 @@ html, body {
     transform: rotate(360deg) translateX(8px) rotate(-360deg); } }
 
 div#app {
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center; }
