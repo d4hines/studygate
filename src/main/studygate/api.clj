@@ -5,7 +5,9 @@
             [clojure.string :as str]
             [clojure.pprint :refer [pprint]]))
 
-(defmutation submit-questions [{:keys [entity questions]}]
+(defmutation submit-questions
+  "Creates an entity record in CRM corresponding to the submitted survey"
+  [{:keys [entity questions]}]
    (action [{:keys [config]}]
           (log/info "Received SUBMIT event for " entity)
           (dyn/create-record (:value config) entity
@@ -22,7 +24,10 @@
   "A helper method for extraction labels as returned from CRM."
   [label] (get-in label ["UserLocalizedLabel" "Label"]))
 
-(defn get-normal-attributes [config id]
+(defn get-normal-attributes
+  "Retrieves all attribute metadata except that belonging to boolean and
+  option set fields, which are at a different endpoint."
+  [config id]
   (log/info "Retrieving normal attributes for MetadataId" id)
   (->> (get-in (dyn/retrieve* config
                               (str "EntityDefinitions(" id
@@ -86,7 +91,10 @@
          (get-boolean-attributes config id)
          (get-picklist-attributes config id)]))
 
-(defn get-surveys [config]
+(defn get-surveys
+  "Gets all CRM entities with made by the \"survey_\" publisher, and
+  transforms them into the shape needed by the UI."
+  [config]
   (log/info "Responding to root :survey query")
   (->> (dyn/retrieve-multiple config "EntityDefinitions" ["DisplayName" "EntitySetName" "Description"] nil)
        (filter (fn [x] (str/starts-with? (get x "EntitySetName") "survey_")))
@@ -98,6 +106,10 @@
                 :survey/questions (get-entity-questions config MetadataId)}))))
 
 (defquery-root :surveys
+  "Returns the data needed by the whole UI tree.
+  TODO This isn't really the \"Fulcro way\". It would be better to create a parser that can
+  instead return the various pieces as they're asked for. Nevertheless, for such a small app.
+  this will do fine for now."
   (value [{:keys [query] {:keys [value]} :config} {:keys [list]}]
          {:db/id (:crmorg value)
           :survey-list/surveys (get-surveys value)}))

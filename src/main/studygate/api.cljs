@@ -2,23 +2,23 @@
   (:require [fulcro.client.mutations :as m :refer [defmutation]]
             [fulcro.util :refer [unique-key]]
             [fulcro.support-viewer :as v]
-            [fipp.edn :refer [pprint]]
             [fulcro.client.primitives :as prim]
             [fulcro.client.logging :as log]))
 
+;; Survey Selection
+(defmutation select-survey [{:keys [id]}]
+  (action [{:keys [state]}]
+          (swap! state assoc :ui/selected-survey id)))
+
+(defmutation clear-selected-survey [{:keys []}]
+  (action [{:keys [state]}]
+          (swap! state assoc :ui/selected-survey nil)))
+
+
+;; Question Values
 (defn set-question-value*
   [state-map id value]
   (assoc-in state-map [:survey-question/by-id id :question/value] value))
-
-(comment (defn on-all-questions
-           "Run the xform on all of the todo items in the list with list-id. The xform will be called with the state map and the
-  todo's id and must return a new state map with that todo updated. The args will be applied to the xform as additional
-  arguments"
-           [state-map list-id xform & args]
-           (let [question-idents [(get-in state-map [:questions/by-id :db/id])]]
-             (reduce (fn [s idt]
-                       (let [id (second idt)]
-                         (apply xform s id args))) state-map item-idents))))
 
 (defn clear-key [state-map table key]
   (let [entries (table state-map)
@@ -35,18 +35,30 @@
         cleared (reduce-kv #(assoc %1 %2 (dissoc %3 :ui/selected-survey)) {} lists)]
     (assoc state-map :survey-list/by-id cleared)))
 
+(defmutation set-question-value [{:keys [id value]}]
+  (action [{:keys [state]}]
+          (swap! state set-question-value* id value)))
+
 (defmutation reset [{:keys []}]
   (action [{:keys [state]}]
           (swap! state (fn [state-map]
                          (-> state-map
                              clear-question-values
-                             clear-selected-survey
-                             (assoc-in [:application :root :ui/route] :survey-list))))))
+                             clear-selected-survey)))))
 
-(defmutation set-question-value [{:keys [id value]}]
+
+;; Routing
+(defn route* [state-map route]
+  (assoc-in state-map [:application :root :ui/route] route))
+
+(defmutation route-to [{:keys [route]}]
   (action [{:keys [state]}]
-          (swap! state set-question-value* id value)))
+          (swap! state route* route)))
 
+
+
+
+;; Submitting questions
 (defn submit-questions*
   [state-map]
   (assoc-in state-map [:application :root :ui/route]

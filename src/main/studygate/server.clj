@@ -10,28 +10,21 @@
 
   (start [component*]
     (println ";; Starting CRM API Client")
-    ;; In the 'start' method, initialize this component
-    ;; and start it running. For example, connect to a
-    ;; database, create thread pools, or initialize shared
-    ;; state.
     component*)
 
   (stop [component*]
     (println ";; Stopping CRM API Client")
-    ;; In the 'stop' method, shut down the running
-    ;; component and release any external resources it has
-    ;; acquired.
-    ;; Return the component, optionally modified. Remember that if you
-    ;; dissoc one of a record's base fields, you get a plain map.
-component*))
+    component*))
 
 (defn make-system
   ([] (make-system "config/dev.edn"))
+  ;; in production, should use a filesystem file
   ([config-path]
-   (let [config-path config-path]                           ; in production, should use a filesystem file
+   (let [config-path config-path]
      (easy/make-fulcro-server
       :config-path config-path
-      :parser (server/fulcro-parser)                       ; allows us to use built-in multimethods and helper macros for reads/mutates
-      :parser-injections #{:config}                 ; places the named components into the env of mutations and queries
-      :components {
-                   :logger        {}}))))
+      ;; Allows us to use built-in multimethods and helper macros for reads/mutates.
+      :parser (server/fulcro-parser)
+      ;; Places the named components into the env of mutations and queries.
+      :parser-injections #{:config}
+      :components {:logger {}}))))
