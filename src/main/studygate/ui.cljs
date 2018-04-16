@@ -42,7 +42,7 @@
                                     (dom/span #js {:className classname} opt-label)))) options))))
 
 (defsc SurveyQuestion [this props]
-  {:query [:db/id :question/displayname :question/type
+  {:query [:db/id :question/displayname :question/type :question/order
            :question/options :question/value :question/logicalname]
    :ident [:survey-question/by-id :db/id]}
   (dom/li nil (render-question this props)))
