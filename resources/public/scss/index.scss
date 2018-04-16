@@ -302,7 +302,7 @@ body {
                                 span {
                                     cursor: pointer;
                                     border: solid white 1px;
-                                    border-radius: 4px;
+                                    border-radius: 3px;
                                     padding: 5px;
                                     transition: all .3s;
                                     &.not-selected {
@@ -511,7 +511,6 @@ Fixes the choppy input label animation in FF.
     bottom: 0;
     left: 0;
     right: 0;
-
     background: rgba(0, 0, 0, 0.7);
     animation: fadein forwards .3s ease-in;
 }
