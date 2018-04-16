@@ -343,23 +343,25 @@ body {
         flex-direction: row; }
         html div#app .surveys .img-container img,
         body div#app .surveys .img-container img {
-          /* This is one place in the app where I'm cheating and not doing 
+          cursor: pointer;
+          transform: translateY(300%);
+          opacity: 0;
+          animation: slide-in .6s forwards ease-in-out;
+          /* The next bit is one place in the app where I'm cheating and not doing 
                    data-driven stuff. I would have to decide how to handle multiple
                    rows of survey-tiles, and that's more UX than I want to do for 
-                   this prototype. */
-          cursor: pointer;
-          margin-top: 100%;
-          animation: slide-in .7s forwards ease-in-out; }
+                   this prototype. */ }
           html div#app .surveys .img-container img:nth-of-type(2),
           body div#app .surveys .img-container img:nth-of-type(2) {
-            animation-delay: 0.3s; }
+            animation-delay: 0.2s; }
           html div#app .surveys .img-container img:nth-of-type(3),
           body div#app .surveys .img-container img:nth-of-type(3) {
-            animation-delay: 0.6s; }
+            animation-delay: 0.4s; }
 
 @keyframes slide-in {
   100% {
-    margin-top: 0; } }
+    transform: translateY(0%);
+    opacity: 1; } }
     html div#app .survey-container,
     body div#app .survey-container {
       display: flex;
@@ -469,7 +471,7 @@ body {
             html div#app .survey-container .survey li .question ul,
             body div#app .survey-container .survey li .question ul {
               margin-top: 15px;
-              margin-bottom: 15px;
+              margin-bottom: 60px;
               padding: 0;
               display: flex;
               flex-direction: column;

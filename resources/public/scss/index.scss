@@ -169,15 +169,15 @@ body {
                 @include flex-center();
                 flex-direction: row;
                 img {
-                    /* This is one place in the app where I'm cheating and not doing 
+                    cursor: pointer;
+                    transform: translateY(300%);
+                    opacity: 0;
+                    animation: slide-in .6s forwards ease-in-out;
+                    $stagger: .2s;
+                    /* The next bit is one place in the app where I'm cheating and not doing 
                    data-driven stuff. I would have to decide how to handle multiple
                    rows of survey-tiles, and that's more UX than I want to do for 
                    this prototype. */
-                    cursor: pointer;
-                    margin-top: 100%;
-                    animation: slide-in .7s forwards ease-in-out;
-                    $delay: 0;
-                    $stagger: .3s;
                     &:nth-of-type(2) {
                         animation-delay: $stagger;
                     }
@@ -187,7 +187,8 @@ body {
                 }
                 @keyframes slide-in {
                     100% {
-                        margin-top: 0;
+                        transform: translateY(0%);
+                        opacity: 1;
                     }
                 }
             }
@@ -290,7 +291,7 @@ body {
                         /* === Option Set Styles === */
                         ul {
                             margin-top: 15px;
-                            margin-bottom: 15px;
+                            margin-bottom: 60px;
                             padding: 0;
                             @include flex-center();
                             li.option-label {
