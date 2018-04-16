@@ -656,8 +656,7 @@ Fixes the choppy input label animation in FF.
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  opacity: 1; }
+  animation: fadein forwards .3s ease-in; }
 
 .popup {
   margin: 70px auto;
