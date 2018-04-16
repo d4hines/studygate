@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* === Mixins === */
 @font-face {
   font-family: 'Myriad Set Pro';
   font-style: normal;
@@ -168,15 +169,365 @@
 
 html,
 body {
-  background-color: #3d4367;
+  margin: 0;
+  height: 100%;
+  background-color: transparent;
   color: white;
   font-family: 'Montserrat', sans-serif; }
+  html #github,
+  body #github {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    cursor: pointer; }
+    html #github img,
+    body #github img {
+      width: 80px; }
+  html div#app,
+  body div#app {
+    /* === App wide styles === */
+    width: 100%;
+    /* === App Components === */
+    /* 
+         Note, in reality, this section (which contains the most complex
+         and state-dependant styles), could and should be replaced with
+         fulcro-css, which allows for the css to be colocatted with components
+         using Garden. I think that would be much more powerful and easier to 
+         maintain in the long run.
+         */
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; }
+
+@keyframes fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+    html div#app div[data-reactroot],
+    body div#app div[data-reactroot] {
+      width: 100%; }
+    html div#app .button,
+    body div#app .button {
+      cursor: pointer;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      background: #009dd3;
+      color: #FFFFFF;
+      border-radius: 3px;
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      font-size: 1.4rem;
+      padding: 16px;
+      text-decoration: none;
+      -webkit-transition: all .3s;
+      transition: all .3s; }
+      html div#app .button:hover,
+      body div#app .button:hover {
+        background: #8698ab;
+        -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
+        -webkit-transform: scale(1.025);
+        transform: scale(1.025); }
+      html div#app .button:active,
+      body div#app .button:active {
+        background: #7f91a6;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        -webkit-transform: scale(0.9975);
+        transform: scale(0.9975);
+        background: #0094c6; }
+    html div#app .navbar,
+    body div#app .navbar {
+      position: fixed;
+      top: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%; }
+      html div#app .navbar h1,
+      body div#app .navbar h1 {
+        font-family: 'Myriad Set Pro';
+        font-weight: bold;
+        font-style: italic;
+        margin-right: 20px;
+        margin-top: 20px; }
+      html div#app .navbar .help,
+      body div#app .navbar .help {
+        cursor: pointer;
+        margin-left: 20px;
+        margin-top: 20px;
+        border: 1px solid white;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; }
+    html div#app .welcome,
+    body div#app .welcome {
+      margin-top: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      html div#app .welcome h1,
+      html div#app .welcome h2,
+      html div#app .welcome span,
+      html div#app .welcome a,
+      body div#app .welcome h1,
+      body div#app .welcome h2,
+      body div#app .welcome span,
+      body div#app .welcome a {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        text-align: center; }
+      html div#app .welcome h1,
+      body div#app .welcome h1 {
+        font-family: 'Myriad Set Pro';
+        font-weight: bold;
+        font-style: italic;
+        font-size: 72px; }
+      html div#app .welcome h2,
+      body div#app .welcome h2 {
+        font-weight: normal;
+        font-size: 32px; }
+      html div#app .welcome span,
+      body div#app .welcome span {
+        font-size: 20px; }
+      html div#app .welcome .logo,
+      body div#app .welcome .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 50px; }
+        html div#app .welcome .logo img,
+        body div#app .welcome .logo img {
+          width: auto;
+          max-width: 90px;
+          height: auto;
+          margin: 10px; }
+        html div#app .welcome .logo span:last-of-type,
+        body div#app .welcome .logo span:last-of-type {
+          font-size: 13px; }
+      @media (max-height: 650px) {
+        html div#app .welcome .logo,
+        body div#app .welcome .logo {
+          display: none; } }
+    html div#app .surveys,
+    body div#app .surveys {
+      margin-top: 10%;
+      position: fixed;
+      width: 600px;
+      left: 50%;
+      margin-left: -300px; }
+      html div#app .surveys h2,
+      body div#app .surveys h2 {
+        text-align: center;
+        font-weight: normal;
+        animation: fadein .6s forwards ease-in; }
+      html div#app .surveys .img-container,
+      body div#app .surveys .img-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row; }
+        html div#app .surveys .img-container img,
+        body div#app .surveys .img-container img {
+          /* This is one place in the app where I'm cheating and not doing 
+                   data-driven stuff. I would have to decide how to handle multiple
+                   rows of survey-tiles, and that's more UX than I want to do for 
+                   this prototype. */
+          cursor: pointer;
+          margin-top: 100%;
+          animation: slide-in .7s forwards ease-in-out; }
+          html div#app .surveys .img-container img:nth-of-type(2),
+          body div#app .surveys .img-container img:nth-of-type(2) {
+            animation-delay: 0.3s; }
+          html div#app .surveys .img-container img:nth-of-type(3),
+          body div#app .surveys .img-container img:nth-of-type(3) {
+            animation-delay: 0.6s; }
+
+@keyframes slide-in {
+  100% {
+    margin-top: 0; } }
+    html div#app .survey-container,
+    body div#app .survey-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 100px; }
+      html div#app .survey-container #survey-title,
+      body div#app .survey-container #survey-title {
+        position: fixed;
+        left: 100px;
+        margin-top: 20px;
+        animation: slidedown .5s forwards ease-in-out; }
+
+@keyframes slidedown {
+  0% {
+    top: -100px; }
+  100% {
+    top: 0; } }
+      html div#app .survey-container a#submit,
+      body div#app .survey-container a#submit {
+        width: 300px;
+        justify-content: center;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 50px; }
+      html div#app .survey-container .survey,
+      body div#app .survey-container .survey {
+        padding: 0;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        animation: slideup .5s forwards ease-in-out; }
+
+@keyframes slideup {
+  0% {
+    margin-top: 100%; }
+  100% {
+    margin-top: 16px; } }
+        html div#app .survey-container .survey li,
+        body div#app .survey-container .survey li {
+          margin-bottom: 40px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 450px; }
+          html div#app .survey-container .survey li .question,
+          body div#app .survey-container .survey li .question {
+            width: 50%;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            transform: scale(1.5);
+            /* === Text Input Styles === */
+            /* === Option Set Styles === */ }
+            html div#app .survey-container .survey li .question :focus,
+            body div#app .survey-container .survey li .question :focus {
+              outline: none; }
+            html div#app .survey-container .survey li .question input,
+            body div#app .survey-container .survey li .question input {
+              font: 16px;
+              color: white;
+              width: 100%;
+              box-sizing: border-box;
+              letter-spacing: 1px;
+              border: 0;
+              padding: 4px 0;
+              border-bottom: 1px solid #ccc;
+              background-color: transparent; }
+            html div#app .survey-container .survey li .question input ~ .focus-border,
+            body div#app .survey-container .survey li .question input ~ .focus-border {
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              width: 0;
+              height: 2px;
+              background-color: white;
+              transition: 0.4s; }
+            html div#app .survey-container .survey li .question input ~ label,
+            body div#app .survey-container .survey li .question input ~ label {
+              position: absolute;
+              left: 0;
+              width: 100%;
+              top: 3px;
+              color: white;
+              transition: 0.3s;
+              z-index: -1;
+              letter-spacing: 0.5px; }
+            html div#app .survey-container .survey li .question input:focus ~ .focus-border,
+            html div#app .survey-container .survey li .question input.has-content ~ .focus-border,
+            body div#app .survey-container .survey li .question input:focus ~ .focus-border,
+            body div#app .survey-container .survey li .question input.has-content ~ .focus-border {
+              width: 100%;
+              transition: 0.4s;
+              left: 0; }
+            html div#app .survey-container .survey li .question input:focus ~ label,
+            html div#app .survey-container .survey li .question input.has-content ~ label,
+            body div#app .survey-container .survey li .question input:focus ~ label,
+            body div#app .survey-container .survey li .question input.has-content ~ label {
+              top: -16px;
+              font-size: 12px;
+              color: white;
+              transition: 0.3s; }
+            html div#app .survey-container .survey li .question ul,
+            body div#app .survey-container .survey li .question ul {
+              margin-top: 15px;
+              margin-bottom: 15px;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center; }
+              html div#app .survey-container .survey li .question ul li.option-label,
+              body div#app .survey-container .survey li .question ul li.option-label {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                width: 100%;
+                align-items: start; }
+                html div#app .survey-container .survey li .question ul li.option-label span,
+                body div#app .survey-container .survey li .question ul li.option-label span {
+                  cursor: pointer;
+                  border: solid white 1px;
+                  border-radius: 4px;
+                  padding: 5px;
+                  transition: all .3s; }
+                  html div#app .survey-container .survey li .question ul li.option-label span.not-selected,
+                  body div#app .survey-container .survey li .question ul li.option-label span.not-selected {
+                    border-color: rgba(150, 150, 150, 0.4);
+                    color: rgba(150, 150, 150, 0.4); }
+                  html div#app .survey-container .survey li .question ul li.option-label span:hover, html div#app .survey-container .survey li .question ul li.option-label span.selected,
+                  body div#app .survey-container .survey li .question ul li.option-label span:hover,
+                  body div#app .survey-container .survey li .question ul li.option-label span.selected {
+                    transform: scale(1.1); }
+    html div#app .done,
+    body div#app .done {
+      margin-top: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      html div#app .done h2, html div#app .done h3,
+      body div#app .done h2,
+      body div#app .done h3 {
+        font-weight: normal;
+        font-size: 30px; }
+      html div#app .done .button, html div#app .done h2, html div#app .done h3,
+      body div#app .done .button,
+      body div#app .done h2,
+      body div#app .done h3 {
+        opacity: 0;
+        animation: fadein .5s forwards ease-in;
+        margin: 20px; }
+      html div#app .done :nth-child(2),
+      body div#app .done :nth-child(2) {
+        animation-delay: .6s; }
+      html div#app .done :nth-child(3),
+      body div#app .done :nth-child(3) {
+        animation-delay: 1.2s; }
 
 .banner-svg-background {
+  background-color: #3d4367;
   bottom: 0;
   left: 0;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   z-index: -1; }
@@ -235,25 +586,79 @@ body {
     -webkit-transform: rotate(360deg) translateX(8px) rotate(-360deg);
     transform: rotate(360deg) translateX(8px) rotate(-360deg); } }
 
-div#app {
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center; }
-  div#app .welcome {
+.loader-container {
+  overflow: hidden; }
+
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 4em;
+  height: 4em; }
+
+.loader {
+  width: 50px;
+  height: 50px;
+  font-size: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -25px;
+  text-indent: -9999em;
+  border-top: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-right: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-left: .5em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: spin-loader .4s infinite linear;
+  animation: spin-loader .4s infinite linear; }
+
+@keyframes spin-loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: .3; }
+  100% {
+    opacity: 1; } }
+
+.loading-data {
+  animation: flickerAnimation linear 1.8s infinite; }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  opacity: 1; }
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  color: grey; }
+  .popup .popup-header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center; }
-    div#app .welcome * {
-      margin: 25px; }
-    div#app .welcome h1 {
-      font-family: 'Myriad Set Pro';
-      font-weight: bold;
-      font-style: italic;
-      font-size: 72px;
-      text-align: center; }
-    div#app .welcome h2 {
-      font-weight: normal;
-      font-size: 34px; }
-    div#app .welcome span {
-      font-size: 20px; }
+    .popup .popup-header .close {
+      font-size: 30px;
+      font-weight: bolder;
+      margin-top: -10px;
+      cursor: pointer; }

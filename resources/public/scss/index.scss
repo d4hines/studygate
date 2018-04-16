@@ -1,3 +1,4 @@
+ /* === Mixins === */
 @import 'fonts';
 $purple: rgb(61, 67, 103);
 @mixin logo-font {
@@ -10,20 +11,345 @@ $purple: rgb(61, 67, 103);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 html,
 body {
-    background-color: $purple;
+    #github {
+        img {
+            width: 80px;
+        }
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        cursor: pointer;
+    }
+    margin: 0;
+    height: 100%;
+    background-color: transparent;
     color: white;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat',
+    sans-serif;
+    div#app {
+        /* === App wide styles === */
+        width: 100%;
+        @keyframes fadein {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        div[data-reactroot] {
+            width: 100%;
+        }
+        .button {
+            cursor: pointer;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background: #009dd3;
+            color: #FFFFFF;
+            border-radius: 3px;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            font-size: 1.4rem;
+            padding: 16px;
+            text-decoration: none;
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            &:hover {
+                background: #8698ab;
+                -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+                color: #FFFFFF;
+                -webkit-transform: scale(1.025);
+                transform: scale(1.025);
+            }
+            &:active {
+                background: #7f91a6;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                -webkit-transform: scale(0.9975);
+                transform: scale(0.9975);
+                background: #0094c6;
+            }
+        }
+        /* === App Components === */
+        /* 
+         Note, in reality, this section (which contains the most complex
+         and state-dependant styles), could and should be replaced with
+         fulcro-css, which allows for the css to be colocatted with components
+         using Garden. I think that would be much more powerful and easier to 
+         maintain in the long run.
+         */
+        .navbar {
+            $nav-margin: 20px;
+            h1 {
+                @include logo-font();
+                margin-right: $nav-margin;
+                margin-top: $nav-margin;
+            }
+            .help {
+                cursor: pointer;
+                margin-left: $nav-margin;
+                margin-top: $nav-margin;
+                border: 1px solid white;
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+                @include flex-center();
+            }
+            position: fixed;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+        z-index: 1;
+        @include flex-center();
+        .welcome {
+            margin-top: 150px;
+            @include flex-center();
+            h1,
+            h2,
+            span,
+            a {
+                margin-top: 25px;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+            h1 {
+                @include logo-font();
+                font-size: 72px;
+            }
+            h2 {
+                font-weight: normal;
+                font-size: 32px;
+            }
+            span {
+                font-size: 20px;
+            }
+            .logo {
+                @include flex-center();
+                position: absolute;
+                bottom: 50px;
+                img {
+                    width: auto;
+                    max-width: 90px;
+                    height: auto;
+                    margin: 10px;
+                }
+                span:last-of-type {
+                    font-size: 13px;
+                }
+            }
+            @media (max-height: 650px) {
+                .logo {
+                    display: none;
+                }
+            }
+        }
+        .surveys {
+            margin-top: 10%;
+            position: fixed;
+            width: 600px;
+            left: 50%;
+            margin-left: -300px;
+            h2 {
+                text-align: center;
+                font-weight: normal;
+                animation: fadein .6s forwards ease-in;
+            }
+            .img-container {
+                @include flex-center();
+                flex-direction: row;
+                img {
+                    /* This is one place in the app where I'm cheating and not doing 
+                   data-driven stuff. I would have to decide how to handle multiple
+                   rows of survey-tiles, and that's more UX than I want to do for 
+                   this prototype. */
+                    cursor: pointer;
+                    margin-top: 100%;
+                    animation: slide-in .7s forwards ease-in-out;
+                    $delay: 0;
+                    $stagger: .3s;
+                    &:nth-of-type(2) {
+                        animation-delay: $stagger;
+                    }
+                    &:nth-of-type(3) {
+                        animation-delay: 2 * $stagger;
+                    }
+                }
+                @keyframes slide-in {
+                    100% {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+        .survey-container {
+            @include flex-center();
+            margin-top: 100px;
+            #survey-title {
+                position: fixed;
+                left: 100px;
+                margin-top: 20px;
+                animation: slidedown .5s forwards ease-in-out;
+            }
+            @keyframes slidedown {
+                0% {
+                    top: -100px;
+                }
+                100% {
+                    top: 0;
+                }
+            }
+            a#submit {
+                width: 300px;
+                justify-content: center;
+                text-align: center;
+                font-size: 25px;
+                font-weight: bold;
+                margin-bottom: 50px;
+            }
+            .survey {
+                padding: 0;
+                width: 500px;
+                // list-style: none;
+                @include flex-center();
+                animation: slideup .5s forwards ease-in-out;
+                @keyframes slideup {
+                    0% {
+                        margin-top: 100%;
+                    }
+                    100% {
+                        margin-top: 16px;
+                    }
+                }
+                li {
+                    margin-bottom: 40px;
+                    @include flex-center();
+                    width: 450px;
+                    .question {
+                        width: 50%;
+                        margin-top: 40px;
+                        margin-bottom: 40px;
+                        transform: scale(1.5);
+                        /* === Text Input Styles === */
+                        :focus {
+                            outline: none;
+                        }
+                        input {
+                            font: 16px;
+                            color: white;
+                            width: 100%;
+                            box-sizing: border-box;
+                            letter-spacing: 1px;
+                            border: 0;
+                            padding: 4px 0;
+                            border-bottom: 1px solid #ccc;
+                            background-color: transparent;
+                        }
+                        input~.focus-border {
+                            position: absolute;
+                            bottom: 0;
+                            left: 50%;
+                            width: 0;
+                            height: 2px;
+                            background-color: white;
+                            transition: 0.4s;
+                        }
+                        input~label {
+                            position: absolute;
+                            left: 0;
+                            width: 100%;
+                            top: 3px;
+                            color: white;
+                            transition: 0.3s;
+                            z-index: -1;
+                            letter-spacing: 0.5px;
+                        }
+                        input:focus~.focus-border,
+                        input.has-content~.focus-border {
+                            width: 100%;
+                            transition: 0.4s;
+                            left: 0;
+                        }
+                        input:focus~label,
+                        input.has-content~label {
+                            top: -16px;
+                            font-size: 12px;
+                            color: white;
+                            transition: 0.3s;
+                        }
+                        /* === Option Set Styles === */
+                        ul {
+                            margin-top: 15px;
+                            margin-bottom: 15px;
+                            padding: 0;
+                            @include flex-center();
+                            li.option-label {
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                                width: 100%;
+                                align-items: start;
+                                span {
+                                    cursor: pointer;
+                                    border: solid white 1px;
+                                    border-radius: 4px;
+                                    padding: 5px;
+                                    transition: all .3s;
+                                    &.not-selected {
+                                        $color: rgba(150, 150, 150, 0.4);
+                                        border-color: $color;
+                                        color: $color;
+                                    }
+                                    &:hover,
+                                    &.selected {
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .done {
+            margin-top: 10%;
+            @include flex-center();
+            h2, h3 {
+                font-weight: normal;
+                font-size: 30px;    
+            }
+            .button, h2, h3 {
+                opacity: 0;
+                animation: fadein .5s forwards ease-in;
+                margin: 20px;
+            }
+            :nth-child(2) {
+                animation-delay: .6s;
+            }
+            :nth-child(3) {
+                animation-delay: 1.2s;
+            }
+        }
+    }
 }
 
+///////////  Background, animations, etc. /////////////////
+///////////////////////////////////////////////////////////
 .banner-svg-background {
+    background-color: $purple;
     bottom: 0;
     left: 0;
     overflow: hidden;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     z-index: -1;
@@ -102,25 +428,94 @@ body {
     }
 }
 
-div#app {
-    z-index: 1;
-    @include flex-center();
-    .welcome {
-        @include flex-center();
-        * {
-            margin: 25px;
-        }
-        h1 {
-            @include logo-font();
-            font-size: 72px;
-            text-align: center;
-        }
-        h2 {
-            font-weight: normal;
-            font-size: 34px;
-        }
-        span {
-            font-size: 20px;
+.loader-container {
+    overflow: hidden;
+}
+
+.loader,
+.loader:after {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    font-size: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    text-indent: -9999em;
+    border-top: .5em solid rgba(255, 255, 255, 0.2);
+    border-right: .5em solid rgba(255, 255, 255, 0.2);
+    border-bottom: .5em solid rgba(255, 255, 255, 0.2);
+    border-left: .5em solid #ffffff;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: spin-loader .4s infinite linear;
+    animation: spin-loader .4s infinite linear;
+}
+
+@keyframes spin-loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes flickerAnimation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.loading-data {
+    animation: flickerAnimation linear 1.8s infinite;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    color: grey;
+    .popup-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .close {
+            font-size: 30px;
+            font-weight: bolder;
+            margin-top: -10px;
+            cursor: pointer;
         }
     }
 }
