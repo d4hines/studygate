@@ -1,7 +1,7 @@
 # StudyGate
 
 StudyGate is is a full-stack Clojure(Script) app that uses the [Fulcro framework](https://github.com/fulcrologic/fulcro), a batteries-included inheritor of Om Next.
-See it live at https://studygate.herokuapp.com/
+See it live at https://studygate.herokuapp.com/.
 
 #### Disclaimer
 - Regarding the styles completely [stolen from StudyTeam](http://studyteamapp.com), please consider it flattery.
