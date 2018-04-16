@@ -522,6 +522,20 @@ body {
       body div#app .done :nth-child(3) {
         animation-delay: 1.2s; }
 
+/* 
+Fixes the choppy input label animation in FF.
+*/
+@-moz-document url-prefix() {
+  .survey input ~ .focus-border {
+    width: 100%;
+    transition: 0.4s;
+    left: 0; }
+  .survey input ~ label {
+    top: -16px;
+    font-size: 12px;
+    color: white;
+    transition: 0.3s; } }
+
 .banner-svg-background {
   background-color: #3d4367;
   bottom: 0;
