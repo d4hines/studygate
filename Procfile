@@ -1,1 +1,1 @@
-web: java -jar target/todomvc.jar
+web: java -jar target/studygate.jar

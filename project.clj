@@ -1,5 +1,5 @@
-(defproject fulcrologic/todomvc "2.0.0"
-  :description "Full-Stack TodoMVC in Fulcro"
+(defproject d4hines/studygate "2.0.0"
+  :description "Data-driven surveys integrated with Dynamics CRM"
   :license {:name "MIT" :url "https://opensource.org/licenses/MIT"}
   :min-lein-version "2.7.0"
 
@@ -15,7 +15,7 @@
                  [environ "1.1.0"]]
   :plugins [[lein-environ "1.1.0"]]
 
-  :uberjar-name "todomvc.jar"
+  :uberjar-name "studygate.jar"
   :source-paths ["src/main"]
   :test-paths ["src/test"]
   :clean-targets ^{:protect false} ["target" "resources/public/js" "resources/private"]
