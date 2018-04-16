@@ -113,7 +113,6 @@
   (dom/div #js {:className "welcome"}
            (dom/h1 nil "StudyGate")
            (dom/h2 nil "A really catch tagline goes here.")
-           ;; (dom/span nil "Getting things ready for you..")
 
            (if (= 0 (count surveys))
              (dom/span #js {:className "loading-data"}
